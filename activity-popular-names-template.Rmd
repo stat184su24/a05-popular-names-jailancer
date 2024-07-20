@@ -153,13 +153,14 @@ head(glyph_ready_data)
 
 Here's the sample code provided by the book:
 
-```
-GlyphReadyForm %>%
+```{r}
+glyph_ready_data %>%
   ggplot(aes(x = year, y = total, group = name)) + 
   geom_line(size = 1, alpha = 0.5, aes(color = name)) + 
   ylab("Popularity") + 
   xlab("Year") +
   ggtitle("Popularity of Names Over Time")
+
 ```
 
 If you prepared your `GlyphReadyForm` data set correctly, you should just be able to copy and paste this code. Alternatively, you can use `mplot` or `esquisse` to create your graph. If you choose to use these interactive functions remember, do not include the `mplot` or `esquisse` functions in your RMarkdown document. Instead, use these functions in the console and copy the generated code into your RMarkkdown document. In addition, we want lines, not dots.
