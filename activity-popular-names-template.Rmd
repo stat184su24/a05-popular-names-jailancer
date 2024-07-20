@@ -46,21 +46,34 @@ data("BabyNames", package = "dcData")
 
 **Goal**: By the end of the activity, each team will create a graph (like Figure A.1 on p 159) showing ups and downs in the popularity of the names at your table according to the U.S. social security registry.  
 
-For steps 5-7, pick any FIVE names you wish. I choose Arnaldo, Ahmid, Nicho, Jennaveve, and Christy. You may choose these names or any others that you would like. 
+For steps 5-7, pick any FIVE names you wish.
+
+I choose Adam , John , Conner , Gunner , Steve  
 
 
 ### Step 1
+```{r}
+data("BabyNames")
 
-*Examine the data you have at hand - for this project the data are the ones available in the `BabyNames` data set. Use at least 2 different functions to examine your data. Then answer the questions: What are the variables are available? What is a case?*
+str(BabyNames)
+summary(BabyNames)
 
 ##### What are the variables are available?
 
+# The variables are : Name , sex , count , year 
 
 ##### What is a case?
- 
+
+# Case is a single observation , which in this case is specific name given to the babies of a specific sex in a specific year 
+
+```
+
+
 ## Look at the data a few different ways (see Ch 9 for more).
 ```{r}
+# We can look at the first few rows of the data 
 
+head(BabyNames)
 
 ```
 
@@ -73,24 +86,29 @@ For steps 5-7, pick any FIVE names you wish. I choose Arnaldo, Ahmid, Nicho, Jen
 
 ##### What variable(s) from the raw data table do not appear at all in the graph?
 
+The variable sex does not appear in the graph.
+
 ##### What variable(s) in the graph are similar to corresponding variables in the raw data table, but might have been transformed in some way?
 
-
+The variables year and name in the graph correspond directly to the raw data. The Count variable is transformed to total to represent the total number of births per year for each name.
 
 ### Step 4
 
 ##### Have cases been filtered out?
 
-
+Yes, the cases have been filtered to include only the selected five names.
 
 ##### Have cases been grouped and summarized within groups in any way?
 
+Yes, the cases have been grouped by year and name, and then summarized to get the total number of births for each name per year.
 
 ##### Have any new variables been introduced?  If so, what the relationship between the new variables and existing variables?
 
+Yes, the new variable total has been introduced, which represents the total number of births for each name per year. This variable is derived from the n variable by summing up the counts for each name per year.
 
 
 ### Step 5
+
 Using the BabyNames data set, filter the data to display just the 5 names that you picked.  Then group the cases by year and name, and count how many total births per year were recorded for each of the names (regardless of sex).  
 
 1. Select the five names
@@ -109,23 +127,40 @@ Using the BabyNames data set, filter the data to display just the 5 names that y
 ### Step 7
 #### Create my glyph ready data set here
 ```{r}
+# Define the selected names
+selected_names <- c("Adam" , "John" , "Conner" , "Gunner" , "Steve")
 
+# Filter the data for the selected names
+filtered_data <- BabyNames %>%
+  filter(name %in% selected_names)
+
+# Group and summarize the data
+glyph_ready_data <- filtered_data %>%
+  group_by(year, name) %>%
+  summarize(total = base::sum(count))
+
+# Arrange the data for plotting
+glyph_ready_data <- glyph_ready_data %>%
+  arrange(year, name)
+
+# Display the glyph-ready data
+head(glyph_ready_data)
 
 
 ```
-
 
 ### Graph It!
 
 Here's the sample code provided by the book:
 
-```
-GlyphReadyForm %>%
+```{r}
+glyph_ready_data %>%
   ggplot(aes(x = year, y = total, group = name)) + 
   geom_line(size = 1, alpha = 0.5, aes(color = name)) + 
   ylab("Popularity") + 
   xlab("Year") +
   ggtitle("Popularity of Names Over Time")
+
 ```
 
 If you prepared your `GlyphReadyForm` data set correctly, you should just be able to copy and paste this code. Alternatively, you can use `mplot` or `esquisse` to create your graph. If you choose to use these interactive functions remember, do not include the `mplot` or `esquisse` functions in your RMarkdown document. Instead, use these functions in the console and copy the generated code into your RMarkkdown document. In addition, we want lines, not dots.
